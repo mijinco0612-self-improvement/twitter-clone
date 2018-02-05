@@ -34,7 +34,6 @@ group :development, :test do
   gem 'tapp'
   gem 'awesome_print'
 
-  gem 'timecop'
   gem 'factory_girl_rails'
   gem 'database_rewinder'
   gem 'guard-livereload'
