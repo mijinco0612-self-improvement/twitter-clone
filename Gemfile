@@ -20,6 +20,23 @@ gem 'bcrypt', '3.1.11'
 group :development, :test do
   gem 'sqlite3', '1.3.13'
   gem 'byebug', '9.0.6', platform: :mri
+
+  gem 'better_errors'
+  gem 'binding_of_caller'
+
+  gem 'pry-rails'
+  gem 'pry-doc'
+  gem 'pry-stack_explorer'
+
+  gem 'hirb'
+  gem 'hirb-unicode'
+
+  gem 'tapp'
+  gem 'awesome_print'
+
+  gem 'factory_girl_rails'
+  gem 'database_rewinder'
+  gem 'guard-livereload'
 end
 
 group :development do
