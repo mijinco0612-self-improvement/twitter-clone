@@ -25,7 +25,6 @@ jobs:
           name: Database setup
           command: bundle exec rake db:create db:schema:load --trace
 
-      # Run test
       - run:
           name: run test
           command: bundle exec rake test

@@ -92,4 +92,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # for session store.
+  config.session_store_servers = ENV["REDISCLOUD_URL"]
+
 end
