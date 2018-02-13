@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    working_directory: ~/twitter-app
+    docker:
+      - image: smarthr/circleci-base
+        environment:
+          RAILS_ENV: test
+          REDIS_HOST: 127.0.0.1
+      - image: redis
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: Restore bundle cache
+          keys:
+            - bundle-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Bundle Install
+          command: bundle install
+
+      - run:
+          name: Database setup
+          command: bundle exec rake db:create db:schema:load --trace
+
+      - run:
+          name: run test
+          command: bundle exec rake test
+          when: always
+

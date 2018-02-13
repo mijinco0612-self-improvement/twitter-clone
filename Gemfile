@@ -18,6 +18,8 @@ gem 'autoprefixer-rails'
 gem 'bcrypt', '3.1.11'
 gem 'haml-rails'
 gem 'erb2haml'
+gem 'redis'
+gem 'redis-rails'
 
 group :development, :test do
   gem 'sqlite3', '1.3.13'
