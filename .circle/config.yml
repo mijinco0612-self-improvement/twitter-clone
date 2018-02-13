@@ -5,7 +5,7 @@ jobs:
     parallelism: 1
     working_directory: ~/circleci-demo-ruby-rails
     docker:
-      - image: circleci/ruby:2.5.0-node
+      - image: smarthr/circleci-base
         environment:
           RAILS_ENV: test
           REDIS_HOST: 127.0.0.1
