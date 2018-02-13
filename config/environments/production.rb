@@ -94,6 +94,6 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # for session store.
-  config.session_store_servers = ENV["REDISCLOUD_URL"]
+  config.session_store_servers = ENV["redis://rediscloud:vCN9Z2KmDuxZhdC0@redis-16986.c12.us-east-1-4.ec2.cloud.redislabs.com:16986"]
 
 end
