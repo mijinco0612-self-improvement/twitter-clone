@@ -36,6 +36,10 @@ jobs:
           command: bundle exec rake db:create db:schema:load --trace
 
       # Run test
+      - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - run: mkdir ~/reports
       - run:
-        command: |
-          rails test
+          command: bundle exec rake test TESTOPTS="--ci-dir=~/reports"
+          when: always
+      - store_test_results:
+          path: ~/reports
