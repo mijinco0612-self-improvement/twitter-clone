@@ -44,6 +44,5 @@ jobs:
 
       # Run test
       - run:
-        pre: sudo service redis-server start
         command: |
           rails test
