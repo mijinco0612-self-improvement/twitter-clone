@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     parallelism: 1
-    working_directory: ~/circleci-demo-ruby-rails
+    working_directory: ~/twitter-app
     docker:
       - image: smarthr/circleci-base
         environment:
@@ -12,8 +12,8 @@ jobs:
           TZ: /usr/share/zoneinfo/Asia/Tokyo
       - image: circleci/postgres:9.5-alpine
         environment:
-          POSTGRES_USER: circleci-demo-ruby
-          POSTGRES_DB: rails_blog
+          POSTGRES_USER: twitter-app-user
+          POSTGRES_DB: twitter-app
           POSTGRES_PASSWORD: ""
       - image: redis:4.0.7
     steps:
@@ -28,16 +28,3 @@ jobs:
           name: Bundle Install
           command: bundle install
 
-
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      - run:
-          name: Database setup
-          command: bundle exec rake db:create db:schema:load --trace
-
-      # Run test
-      - run:
-        command: |
-          rails test
