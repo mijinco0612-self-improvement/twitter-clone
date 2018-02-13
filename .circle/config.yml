@@ -1,21 +1,17 @@
-
 version: 2
+
 jobs:
   build:
-    parallelism: 1
-    working_directory: ~/twitter-app
+    working_directory: /app
     docker:
       - image: smarthr/circleci-base
         environment:
           RAILS_ENV: test
           REDIS_HOST: 127.0.0.1
           TZ: /usr/share/zoneinfo/Asia/Tokyo
-      - image: circleci/postgres:9.5-alpine
-        environment:
-          POSTGRES_USER: twitter-app-user
-          POSTGRES_DB: twitter-app
-          POSTGRES_PASSWORD: ""
-      - image: redis:4.0.7
+          CIRCLE_TEST_REPORTS: /tmp/test-results
+          SOME_YOUR_ENVIRONMENTS: some_value
+      - image: redis
     steps:
       - checkout
 
@@ -25,6 +21,41 @@ jobs:
             - bundle-{{ checksum "Gemfile.lock" }}
 
       - run:
-          name: Bundle Install
+          name: Run bundle install
           command: bundle install
 
+      - save_cache:
+          name: Store bundle cache
+          key: bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Run Rubocop
+          command: |
+            test_reports_dir=$CIRCLE_TEST_REPORTS/rubocop
+            mkdir -p $test_reports_dir
+            junit_formatter_ruby=$(bundle show rubocop-junit-formatter)/lib/rubocop/formatter/junit_formatter.rb
+            bundle exec rubocop -L | \
+            circleci tests split --split-by=timings --timings-type=filename | \
+            xargs bundle exec rubocop -D -R -r $junit_formatter_ruby -c .rubocop.yml --format RuboCop::Formatter::JUnitFormatter --out $test_reports_dir/rubocop.xml
+      - restore_cache:
+          name: Restore npm cache
+          keys:
+            - npm-{{ checksum "package.json" }}
+
+      - run:
+          name: Run npm install
+          command: |
+            npm cache clean
+            npm install
+      - save_cache:
+          name: Store npm cache
+          key: npm-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+      - run:
+          name: Run Test
+          command: |
+            rails test
