@@ -8,11 +8,13 @@ jobs:
       - image: circleci/ruby:2.5.0-node
         environment:
           RAILS_ENV: test
+          REDIS_HOST: 127.0.0.1
       - image: circleci/postgres:9.5-alpine
         environment:
           POSTGRES_USER: circleci-demo-ruby
           POSTGRES_DB: rails_blog
           POSTGRES_PASSWORD: ""
+      - image: redis
     steps:
       - checkout
 
