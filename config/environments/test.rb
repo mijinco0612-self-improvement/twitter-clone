@@ -43,4 +43,6 @@ Rails.application.configure do
 
   # for session store.
   config.session_store_servers = 'redis://localhost:6379/0/session'
+
+  config.action_mailer.default_url_options = {host: 'example.com'}
 end
